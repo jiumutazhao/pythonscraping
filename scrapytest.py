@@ -1,3 +1,20 @@
 from urllib.request import urlopen
-html=urlopen("http://pythonscraping.com/pages/page1.html")
-print(html.read())
+from bs4 import BeautifulSoup
+from urllib.error import HTTPError
+
+def getTitle(url):
+    try:
+        html=urlopen(url)
+    except HTTPError as e:
+        return None
+    try:
+        bs0bj=BeautifulSoup(html.read())
+        title=bs0bj.body.h1
+    except AttributeError as e:
+        return None
+    return  title
+title=getTitle("http://pythonscraping.com/pages/page1.html")
+if title==None:
+    print("Title could not be found")
+else:
+    print(title)
